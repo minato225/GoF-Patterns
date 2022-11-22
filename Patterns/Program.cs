@@ -1,14 +1,17 @@
 ﻿using Patterns.AbstractFactory;
 using Patterns.AbstractFactory.Factories;
 
-var document = new Document(new HtmlFactory());
-Console.WriteLine(GetText());
-document = new Document(new LatexFactory());
-Console.WriteLine(GetText());
-document = new Document(new PlainTextFactory());
-Console.WriteLine(GetText());
+var documents = new List<Document>
+{
+    new Document(new HtmlFactory()),
+    new Document(new LatexFactory()),
+    new Document(new PlainTextFactory())
+};
 
-string GetText() =>
+foreach(var document in documents)
+    Console.WriteLine(GetText(document));
+
+static string GetText(Document document) =>
     document.PlainText($"""
         Some Text
         Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
