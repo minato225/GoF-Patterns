@@ -1,24 +1,29 @@
-﻿using Patterns.AbstractFactory;
-using Patterns.AbstractFactory.Factories;
+﻿using AFClient = Patterns.AbstractFactory.Client;
+using FMClient = Patterns.FactoryMethod.Client;
 
-var documents = new List<Document>
+Action IClient;
+
+do
 {
-    new Document(new HtmlFactory()),
-    new Document(new LatexFactory()),
-    new Document(new PlainTextFactory())
-};
+    Console.WriteLine("""
+    0 - Close app,
+    1 - Abstract Factory,
+    2 - Factory Method,
+    """
+    );
 
-foreach(var document in documents)
-    Console.WriteLine(GetText(document));
+    var input = Console.ReadLine();
 
-static string GetText(Document document) =>
-    document.PlainText($"""
-        Some Text
-        Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        Aenean commodo ligula eget dolor.
-        {document.BoldText("Aenean massa. ")}
-        Cum sociis natoque penatibus et
-        {document.BoldText("From linq")}
-        {document.HyperlinkText("Random text Site", "https://www.blindtextgenerator.com/lorem-ipsum")}
+    if (input == "0") break;
 
-        """);
+    IClient = input switch
+    {
+        "1" => AFClient.Do,
+        "2" => FMClient.Do,
+        // TODO: Create new Patterns
+        _ => throw new NotImplementedException()
+    };
+
+    IClient.Invoke();
+
+} while (true);
